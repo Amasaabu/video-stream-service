@@ -2,6 +2,7 @@ package com.video.stream.controllers;
 
 
 import com.video.stream.services.StreamFromS3Service;
+import com.video.stream.services.VideoService;
 import com.video.stream.utils.VerifyToken;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -22,8 +23,9 @@ import java.io.InputStream;
 public class VideoStreamController {
     VerifyToken verifyToken;
     StreamFromS3Service streamFromS3Service;
-    @GetMapping("/stream/{fileName}")
-    public ResponseEntity<StreamingResponseBody> streamVideo(@PathVariable String fileName,
+    VideoService videoService;
+    @GetMapping("/stream/{id}")
+    public ResponseEntity<StreamingResponseBody> streamVideo(@PathVariable String id,
 
                                                              @RequestHeader(value = "Range", required = false) String rangeHeader) throws Exception {
         //verify the token
@@ -37,6 +39,10 @@ public class VideoStreamController {
 
         //else create new session for watches
 
+        //get file name from videoid
+        //retrive video frmo database
+        var video = videoService.findVideoById(id);
+        var fileName = video.getOriginalFileName();
         String range = rangeHeader != null ? rangeHeader.replace("bytes=", "") : null;
         ResponseBytes<GetObjectResponse> responseBytes = streamFromS3Service.getObject(fileName, range);
         GetObjectResponse responseMetadata = responseBytes.response();
