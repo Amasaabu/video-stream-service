@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.video</groupId>
-	<artifactId>upload</artifactId>
+	<artifactId>stream</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>upload service</name>
 	<description>Demo project for Spring Boot</description>
@@ -45,6 +45,16 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.34</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.5.12</version>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>8.0</version>
 		</dependency>
 
 		<dependency>
