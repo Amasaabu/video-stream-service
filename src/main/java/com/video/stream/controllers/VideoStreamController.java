@@ -2,6 +2,7 @@ package com.video.stream.controllers;
 
 
 import com.video.stream.services.StreamFromS3Service;
+import com.video.stream.utils.VerifyToken;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,22 @@ import java.io.InputStream;
 @RequestMapping("/video")
 @AllArgsConstructor
 public class VideoStreamController {
+    VerifyToken verifyToken;
     StreamFromS3Service streamFromS3Service;
     @GetMapping("/stream/{fileName}")
     public ResponseEntity<StreamingResponseBody> streamVideo(@PathVariable String fileName,
-                                                             @RequestHeader(value = "Range", required = false) String rangeHeader){
+
+                                                             @RequestHeader(value = "Range", required = false) String rangeHeader) throws Exception {
+        //verify the token
+        //  verifyToken.getProfileFroToken(token);
+
+        //verify if user has active subscription
+
+        //try to search if user has started watching from mongodb
+
+        //if user has started watching check for last stream byte
+
+        //else create new session for watches
 
         String range = rangeHeader != null ? rangeHeader.replace("bytes=", "") : null;
         ResponseBytes<GetObjectResponse> responseBytes = streamFromS3Service.getObject(fileName, range);
@@ -34,8 +47,6 @@ public class VideoStreamController {
 //        headers.add("Content-Type", responseMetadata.contentType());
         headers.add("Content-Type", "video/mp4");
         headers.add("Accept-Ranges", "bytes");
-        System.out.println("range header is "+ rangeHeader);
-        System.out.println("range is " +range);
 
         long start = 0;
         long end = contentLength - 1;
